@@ -1,5 +1,6 @@
 // Dependencies
 const express = require('express');
+const session = require('express-session');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 require('dotenv').config();
@@ -24,8 +25,23 @@ db.on('disconnected', () => console.log('mongo disconnected'));
 // Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
+app.use(session({
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: false,
+}));
     // Controllers
+        // Users
+const userController = require('./controllers/users');
+app.use('/users', userController);
+        // Sessions
+const sessionsController = require('./controllers/sessions')
+app.use('/sessions', sessionsController)
 
+// Routes
+app.get('/', (req, res) => {
+    res.render('index.ejs')
+})
 
 // Listen to app connect
 app.listen(PORT, () => {console.log(`WE'RE IN.... to PORT ${PORT}`)})
