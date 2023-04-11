@@ -9,6 +9,12 @@ const userRouter = express.Router();
 const User = require('../models/user.js');
 
 // Routes
+// ======= New =======
+userRouter.get('/new', (req, res) => {
+	res.render('users/new.ejs', {
+        currentUser: req.session.currentUser,
+    });
+}); 
 
 // ====== Create ======
 userRouter.post('/', (req, res) => {

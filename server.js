@@ -39,9 +39,18 @@ const sessionsController = require('./controllers/sessions')
 app.use('/sessions', sessionsController)
 
 // Routes
+
 app.get('/', (req, res) => {
-    res.render('index.ejs')
-})
+	if (req.session.currentUser) {
+		res.render('dashboard.ejs', {
+			currentUser: req.session.currentUser
+		});
+	} else {
+		res.render('index.ejs', {
+			currentUser: req.session.currentUser
+		});
+	}
+});
 
 // Listen to app connect
 app.listen(PORT, () => {console.log(`WE'RE IN.... to PORT ${PORT}`)})
